@@ -2,6 +2,8 @@ package mx.edu.tecdesoftware.market_backend_11_tecsoft.persistence.entity;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 @Table(name = "clientes")
 public class Cliente {
@@ -11,11 +13,15 @@ public class Cliente {
 
     private String nombre;
     private String apellidos;
-    private Long celular;
+    private String celular;
     private  String direccion;
 
     @Column (name = "correo_electronico")
     private String correoElectronico;
+
+    // Un cliente tiene muchas compras
+    @OneToMany(mappedBy = "cliente")
+    private List<Compra> compras;
 
     public String getId() {
         return id;
@@ -41,11 +47,11 @@ public class Cliente {
         this.apellidos = apellidos;
     }
 
-    public Long getCelular() {
+    public String getCelular() {
         return celular;
     }
 
-    public void setCelular(Long celular) {
+    public void setCelular(String celular) {
         this.celular = celular;
     }
 
