@@ -1,23 +1,33 @@
 package mx.edu.tecdesoftware.market_backend_11_tecsoft.persistence;
 
+import mx.edu.tecdesoftware.market_backend_11_tecsoft.domain.Product;
+import mx.edu.tecdesoftware.market_backend_11_tecsoft.domain.repository.ProductRepository;
 import mx.edu.tecdesoftware.market_backend_11_tecsoft.persistence.crud.ProductoCrudRepository;
 import mx.edu.tecdesoftware.market_backend_11_tecsoft.persistence.entity.Producto;
+import mx.edu.tecdesoftware.market_backend_11_tecsoft.persistence.mapper.ProductMapper;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 
-public class ProductoRepository {
+@Repository
+// Le dices a Spring que esta clase se comunicara con la base de datos
+public class ProductoRepository implements ProductRepository {
 
     private ProductoCrudRepository productoCrudRepository;
-    
+    private ProductMapper productMapper;
+
     // SELECT * FROM productos
-    public List<Producto> getAll() {
+
+    public List<Product> getAll() {
         //Se "castear" de Iterable a la Lista
-        return (List<Producto>) productoCrudRepository.findAll();
+        List<Producto> productos = (List<Producto>) productoCrudRepository.findAll();
+        return productMapper.toProducts(productos);
     }
 
-    public List<Producto> getByCategoria(int idCategoria) {
-        return productoCrudRepository.findByIdCategoriaOrderByNombreAsc(idCategoria);
+    public  Optional<List<Product>> getByCategory(int categoryId) {
+        List<Producto> productos = productoCrudRepository.findByIdCategoriaOrderByNombreAsc(categoryId);
+        return Optional.of(productMapper.toProducts(productos));
     }
 
     /*
@@ -28,14 +38,15 @@ public class ProductoRepository {
 
     */
 
-    public Optional<List<Producto>> getEscasos(int cantidad) {
-        return productoCrudRepository.findByCantidadStockLessThanAndEstado(cantidad, true);
-
+    public Optional<List<Product>> getScarceProducts(int quantity) {
+        Optional<List<Producto>> productos = productoCrudRepository.findByCantidadStockLessThanAndEstado(quantity, true);
+        return Optional.of(productMapper.toProducts(productos.get()));
     }
 
     //Obtener un producto dado el id
-    public Optional<Producto> getProductoById(int idProducto) {
-        return productoCrudRepository.findById(idProducto);
+    public Optional<Product> getProduct(Product product) {
+        return productoCrudRepository.findById(product.getProductId())
+                .map(producto ->  productMapper.toProduct(producto));
     }
 
     /*
@@ -45,13 +56,14 @@ public class ProductoRepository {
 
 
     //Guardar un Producto
-    public Producto save(Producto producto) {
-        return productoCrudRepository.save(producto);
+    public Product save(Product product) {
+        Producto producto = productMapper.toProducto(product);
+        return productMapper.toProduct(productoCrudRepository.save(producto));
     }
 
     //Eliminar por id
-    public void delete(int idProducto) {
-        productoCrudRepository.deleteById(idProducto);
+    public void delete(int productId) {
+        productoCrudRepository.deleteById(productId);
     }
 
 }
