@@ -14,8 +14,13 @@ import java.util.Optional;
 // Le dices a Spring que esta clase se comunicara con la base de datos
 public class ProductoRepository implements ProductRepository {
 
-    private ProductoCrudRepository productoCrudRepository;
-    private ProductMapper productMapper;
+    private final ProductoCrudRepository productoCrudRepository;
+    private final ProductMapper productMapper;
+
+    public ProductoRepository(ProductoCrudRepository productoCrudRepository, ProductMapper productMapper) {
+        this.productoCrudRepository = productoCrudRepository;
+        this.productMapper = productMapper;
+    }
 
     // SELECT * FROM productos
 
