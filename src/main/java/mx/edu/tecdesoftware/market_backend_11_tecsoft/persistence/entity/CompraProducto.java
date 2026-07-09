@@ -15,11 +15,13 @@ public class CompraProducto {
     private Boolean estado;
 
     // Saber todos los productos que hay en una compra
+    @MapsId("idCompra")
     @ManyToOne
     @JoinColumn(name = "id_compra",
             insertable = false, updatable = false)
     private Compra compra;
 
+    @MapsId("idProducto")
     @ManyToOne
     @JoinColumn(name = "id_producto",
             insertable = false, updatable = false)
