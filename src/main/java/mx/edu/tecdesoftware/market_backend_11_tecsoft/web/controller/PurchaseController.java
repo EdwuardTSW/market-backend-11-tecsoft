@@ -28,8 +28,8 @@ public class PurchaseController {
         return new ResponseEntity<>(purchaseService.getAll(), HttpStatus.OK);
     }
 
-    @GetMapping("/client/{id}")
-    public ResponseEntity<List<Purchase>> getByClient(@PathVariable("id") String clientId) {
+    @GetMapping("/client/{idClient}")
+    public ResponseEntity<List<Purchase>> getByClient(@PathVariable("idClient") String clientId) {
         return purchaseService.getByClient(clientId)
                 .filter(purchases -> !purchases.isEmpty())
                 .map(ResponseEntity::ok)

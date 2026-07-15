@@ -61,9 +61,18 @@ public class ProductoRepository implements ProductRepository {
 
 
     //Guardar un Producto
+    @Override
     public Product save(Product product) {
         Producto producto = productMapper.toProducto(product);
-        return productMapper.toProduct(productoCrudRepository.save(producto));
+
+        if (producto.getIdProducto() != null
+                && producto.getIdProducto().equals(0)) {
+            producto.setIdProducto(null);
+        }
+
+        Producto productoGuardado = productoCrudRepository.save(producto);
+
+        return productMapper.toProduct(productoGuardado);
     }
 
     //Eliminar por id

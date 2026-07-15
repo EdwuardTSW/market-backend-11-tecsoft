@@ -44,13 +44,11 @@ public class ProductController {
         return new ResponseEntity<>(productService.save(product), HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity delete(@PathVariable("id") int productId){
+    @DeleteMapping("/{productId}")
+    public ResponseEntity<Void> delete(@PathVariable("productId") Integer productId){
         if (productService.delete(productId)){
             return ResponseEntity.ok().build();
-        } else  {
-            return ResponseEntity.notFound().build();
-        }
+        } return ResponseEntity.notFound().build();
     }
 
 }

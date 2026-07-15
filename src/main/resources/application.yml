@@ -2,10 +2,10 @@ spring:
   datasource:
     url: ${DB_URL:jdbc:postgresql://localhost:5432/market}
     username: ${DB_USERNAME:postgres}
-    password: ${DB_PASSWORD:postgres}
+    password: ${DB_PASSWORD:2213}
   jpa:
     hibernate:
-      ddl-auto: none
+      ddl-auto: update
     show-sql: true
     properties:
       hibernate:

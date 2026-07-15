@@ -34,7 +34,7 @@ public class ProductService {
         return productRepository.save(product);
     }
 
-    public boolean delete(int idProducto) {
+    public boolean delete(Integer idProducto) {
 
         if (getProduct(idProducto).isPresent()) {
             productRepository.delete(idProducto);
