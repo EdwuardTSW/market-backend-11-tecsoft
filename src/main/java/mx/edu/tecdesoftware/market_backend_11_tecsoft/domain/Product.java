@@ -26,7 +26,7 @@ public class Product {
         this.name = name;
     }
 
-    public Integer getCategoryId() {
+    public Integer   getCategoryId() {
         return categoryId;
     }
 
